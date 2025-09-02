@@ -1,0 +1,46 @@
+scalar Long
+scalar DateTime
+
+type Product {
+  id: Int!
+  name: String!
+  description: String
+  avail: Boolean!
+  createdBy: String!
+  createdDate: DateTime!
+  modifiedBy: String!
+  modifiedDate: DateTime!
+}
+
+type ProductPage {
+  total: Long!
+  page: Int!
+  size: Int!
+  nodes: [Product!]!
+}
+
+input ProductInput {
+  name: String!
+  description: String
+  avail: Boolean = true
+  createdBy: String = "system"
+  modifiedBy: String = "system"
+}
+
+input ProductUpdateInput {
+  name: String!
+  description: String
+  avail: Boolean!
+  modifiedBy: String = "system"
+}
+
+type Query {
+  product(id: Int!): Product
+  products(page: Int = 0, size: Int = 20, sortBy: String = "createdDate", sortDir: String = "desc", nameLike: String, avail: Boolean): ProductPage!
+}
+
+type Mutation {
+  createProduct(input: ProductInput!): Product!
+  updateProduct(id: Int!, input: ProductUpdateInput!): Product!
+  deleteProduct(id: Int!): Boolean!
+}
